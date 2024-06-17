@@ -16,12 +16,13 @@ Para usar el siguiente programa debemos cumplir con los siguientes requisitos pa
 - Debemos tener instalado el compilador de c/c++.
 
 ## Instrucciones de instalacion: 
-1. Para poder instalar el programa debemos compilar el archivo con extension ".c".
-2. Ejecutar como administrador el archivo con exxtension ".exe".
+1. Para poder instalar el programa debemos descargar y compilar el archivo con extension ".c".
+2. Se nos generara un archivo nuevo el cual debemos ejecutar como administrador al archivo con exxtension ".exe".
+3. Sino queremos instalar el compilador de c, simplemente podemos descargar el archivo en ".exe" del repositorio e ingresar los datos solicitados.
 
 ## Uso:
-Para usar el programa como antes lo hemos dicho, ejecutamos como administrador el archivo .exe y luego procedemos a ingresar nuestras coordenadas geograficas actuales,
+Para usar el programa como antes lo hemos dicho, damos clic derecho y ejecutamos como administrador el archivo .exe y luego procedemos a ingresar nuestras coordenadas geograficas actuales,
 especificamente, la Latitud y la Longitud. 
 Para poder obtener estos datos podemos dirigirnos a google maps en la aplciacion de un telefono celular o bucando google maps en una computador, pinchamos en el puntero de
-neustra ubicacion actual y nos dara los datos de nuestra latitud y longitud actuales. 
+neustra ubicacion actual y nos dara los datos de nuestra latitud y longitud actuales. Estos datos los ingresamos al programa y listo, se nos dara la altitud y orientacion optima para el panel solar. 
   
