@@ -200,7 +200,7 @@ int main()
     printf("Minutos => %d\n", minutos);
     printf("Segundos => %d\n", segundos);
     printf("Anio => %d\n", anios);
-    printf("Mes => %d\n", meses);
+    printf("Mes => %d\n", meses +1);
     printf("Dia => %d\n", dias);
 
     // Iniciamos el Programa llamando y asando los valores a cada una de las funciones antes definidas //
