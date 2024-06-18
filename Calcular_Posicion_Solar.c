@@ -171,10 +171,10 @@ int main()
     while (Control == 1)
     {
         printf("\n1. Longitud => ");
-        if (scanf("%lf", &Longitud) == 1)
+        if (scanf("%lf", &Longitud) == true)
         {
             printf("\n2. Latitud => ");
-            if (scanf("%lf", &Latitud) == 1)
+            if (scanf("%lf", &Latitud) == true)
             {
                 break;
             }
