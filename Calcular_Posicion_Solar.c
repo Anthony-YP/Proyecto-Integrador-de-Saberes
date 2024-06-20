@@ -189,7 +189,7 @@ int main()
 
     // Solicitamos al usuario su Longitud y Latitud actual y a su vez verificamos que los datos ingresados sean correctos //
     printf("// Bienvenido, Por favor ingrese su Longitud y Latitud actual //\n");
-    Longitud = Pedir_Datos("1. Longitud (En un rango de -180 a 180 grados)=> ");
+    Longitud = Pedir_Datos("1. Longitud (En un rango de -180 a 180 grados) => ");
     Latitud = Pedir_Datos("2. Latitud (En un rango de -90 a 90 grados) => ");
     // Presentamos las varibales de hora y fecha para verificar que los datos esten correctos //
     printf("====================================================\n");
