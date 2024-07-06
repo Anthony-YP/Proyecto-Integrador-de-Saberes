@@ -250,5 +250,6 @@ int main()
     printf("> La posicion de la orientacion del sol es de => %f grados desde el norte\n", Azimut);
     printf("========================================================\n");
     getchar();
+    printf("--------------------------------------------------------------------\n");
     return 0;
 }
