@@ -23,49 +23,21 @@ int Calcular_Numero_Dias(int meses, int dias, int anios)
     // Iteramos cada uno de los meses transcurridos y sumamos los dias de cada mes pasado a nuestra variable N_Dias encargada de almacenar los dias transcurridos //
     for (int i = 1; i <= meses; i++)
     {
-        switch (i)
+        if (i == 1 || i == 3 || i == 5 || i == 7 || i== 8 || i== 10 || i== 12)
         {
-        case 1:
-            N_Dias = N_Dias + 31;
-            break;
-        case 2:
-            N_Dias = N_Dias + 28;
-            break;
-        case 3:
-            N_Dias = N_Dias + 31;
-            break;
-        case 4:
-            N_Dias = N_Dias + 30;
-            break;
-        case 5:
-            N_Dias = N_Dias + 31;
-            break;
-        case 6:
-            N_Dias = N_Dias + 30;
-            break;
-        case 7:
-            N_Dias = N_Dias + 31;
-            break;
-        case 8:
-            N_Dias = N_Dias + 31;
-            break;
-        case 9:
-            N_Dias = N_Dias + 30;
-            break;
-        case 10:
-            N_Dias = N_Dias + 31;
-            break;
-        case 11:
-            N_Dias = N_Dias + 30;
-            break;
-        case 12:
-            N_Dias = N_Dias + 31;
-            break;
+            N_Dias +=31;
+        }else if (i== 4 || i== 6 || i== 9 || i== 11)
+        {
+            N_Dias+= 30;
+        }else
+        {
+            N_Dias+= 28;
         }
     }
+    
     // A los dias sumados de los meses que han pasado le sumamos los dias transcurridos del mes actual //
     N_Dias = N_Dias + dias;
-    // Verificamos si el año es biciesto y de serlo le agregamos un dia al resultado final de los dias trancurridos //
+    // Verificamos si el año es biciesto y de ser asi le agregamos un dia al resultado final de los dias trancurridos //
     if (anios % 4 == 0)
     {
         if (anios % 100 == 0)
@@ -165,7 +137,80 @@ double Pedir_Datos(const char *mensaje)
         }
     }
 }
+void fecha_hora(int *horas, int *minutos, int *segundos, int *anios, int *meses, int *dias){
+    /* Recuperamos la fecha y hora actual del sistema con ayuda de la libreria "time.h" y metemos cada uno de los datos en su respectiva
+    variable*/
+    time_t tiempoahora;
+    time(&tiempoahora);
+    struct tm *mitiempo = localtime(&tiempoahora);
+    *horas = mitiempo->tm_hour;
+    *minutos = mitiempo->tm_min;
+    *segundos = mitiempo->tm_sec;
+    *anios = mitiempo->tm_year + 1900;
+    *meses = mitiempo->tm_mon;
+    *dias = mitiempo->tm_mday;
+    // Presentamos las varibales de hora y fecha para verificar que los datos esten correctos //
+    printf("====================================================\n");
+    printf("// FECHA Y HORA ACTUAL DEL SISTEMA //\n");
+    printf("Horas => %d\n", *horas);
+    printf("Minutos => %d\n", *minutos);
+    printf("Segundos => %d\n", *segundos);
+    printf("Anio => %d\n", *anios);
+    printf("Mes => %d\n", *meses + 1);
+    printf("Dia => %d\n", *dias);
+}
+void ingreso_datos(double *Longitud, double *Latitud){
+    // Solicitamos al usuario su Longitud y Latitud actual y a su vez verificamos que los datos ingresados sean correctos //
+    printf("// Bienvenido, Por favor ingrese su Longitud y Latitud actual //\n");
+    *Longitud = Pedir_Datos("1. Longitud (En un rango de -180 a 180 grados) => ");
+    *Latitud = Pedir_Datos("2. Latitud (En un rango de -90 a 90 grados) => ");
+}
 
+void resultados_obtenidos(int *horas, int *minutos, int *segundos, int *anios, int *meses, int *dias,int *N_Dias, double *Declinacion_Solar, double *EoT, double *TSV, double *Angulo_Horario, double *Altitud_Solar, double *Orientacion_Solar, double *Azimut, double *Hora_Solar, double *Minutos_Solar, double *Latitud, double *Longitud){
+    // Iniciamos el Programa llamando y los valores a cada una de las funciones antes definidas //
+    ingreso_datos(Longitud, Latitud);
+    fecha_hora(horas, minutos, segundos, anios, meses, dias);
+    printf("====================================================\n");
+    printf("// VERIFICACION DE DATOS //\n");
+
+    // Calculamos los dias transcurridos desde que inicio el año hasta el dia actual usando la funcion correspondiente antes definida //
+    *N_Dias = Calcular_Numero_Dias(*meses, *dias, *anios);
+    printf("> Dias transcurridos desde que inicio el anio => %d\n", *N_Dias);
+
+    // Calculamos la Declinacion Solar usando la funcion correspondiente y pasando los parametros por valores necesarios para la operacion //
+    *Declinacion_Solar = Calcular_Angulo_Declinacion_Solar(*N_Dias);
+    printf("> Declinacion Solar => %f\n", *Declinacion_Solar);
+
+    // Calculamos la ecuacion del tiempo (EoT) y pasamos los parametros necesarios para el calculo //
+    *EoT = Ecuacion_Del_Tiempo(*N_Dias);
+    printf("> Ecuacion del tiempo => %f\n", *EoT);
+
+    // Calculamos el tiempo solar verdadero pasando como referencia los datos necesarios para el calculo //
+    *TSV = Calcular_Tiempo_Solar_Verdadero(*horas, *minutos, *Longitud, *EoT);
+    *Hora_Solar = trunc(*TSV);
+    *Minutos_Solar = round(60.0 * (*TSV - *Hora_Solar));
+    printf("> Tiempor solar verdadero => %f\n", *TSV);
+
+    // Calculamos el angulo horario usando como parametro el tiempo solar verdadero (TSV) //
+    *Angulo_Horario = Calcular_Angulo_Horario(*TSV);
+    printf("> Angulo Horario => %f\n", *Angulo_Horario);
+
+    // Pasamos la Declinacion Solar y la Latitud de grados a radianes //
+    *Declinacion_Solar = *Declinacion_Solar * (M_PI / 180.0);
+    *Latitud = *Latitud * (M_PI / 180.0);
+    printf("> Declinacion Solar en radianes => %f\n", *Declinacion_Solar);
+    printf("> Latitud en radianes => %f\n", *Latitud);
+
+    // Calculamos la Altitud Solar en radianes //
+    *Altitud_Solar = Calcular_Altitud_Solar(*Declinacion_Solar, *Latitud, *Angulo_Horario);
+    // Pasamos la Altitud Solar a grados //
+    *Altitud_Solar = *Altitud_Solar * (180.0 / M_PI);
+
+    // Calculamos la orientacion Solar o Azimut en radianes//
+    *Azimut = Calcular_Azimut(*Declinacion_Solar, *Altitud_Solar * (M_PI / 180.0), *Latitud, *Angulo_Horario);
+    // Pasamos la orientacion solar a grados //
+    *Azimut = *Azimut * (180.0 / M_PI);
+}
 int main()
 {
     system("@cls||clear");
@@ -175,74 +220,7 @@ int main()
     int N_Dias;
     double Longitud, Latitud;
     double Declinacion_Solar, EoT, TSV, Angulo_Horario, Altitud_Solar, Orientacion_Solar, Azimut, Hora_Solar, Minutos_Solar;
-    /* Recuperamos la fecha y hora actual del sistema con ayuda de la libreria "time.h" y metemos cada uno de los datos en su respectiva
-    variable*/
-    time_t tiempoahora;
-    time(&tiempoahora);
-    struct tm *mitiempo = localtime(&tiempoahora);
-    horas = mitiempo->tm_hour;
-    minutos = mitiempo->tm_min;
-    segundos = mitiempo->tm_sec;
-    anios = mitiempo->tm_year + 1900;
-    meses = mitiempo->tm_mon;
-    dias = mitiempo->tm_mday;
-
-    // Solicitamos al usuario su Longitud y Latitud actual y a su vez verificamos que los datos ingresados sean correctos //
-    printf("// Bienvenido, Por favor ingrese su Longitud y Latitud actual //\n");
-    Longitud = Pedir_Datos("1. Longitud (En un rango de -180 a 180 grados) => ");
-    Latitud = Pedir_Datos("2. Latitud (En un rango de -90 a 90 grados) => ");
-    // Presentamos las varibales de hora y fecha para verificar que los datos esten correctos //
-    printf("====================================================\n");
-    printf("// FECHA Y HORA ACTUAL DEL SISTEMA //\n");
-    printf("Horas => %d\n", horas);
-    printf("Minutos => %d\n", minutos);
-    printf("Segundos => %d\n", segundos);
-    printf("Anio => %d\n", anios);
-    printf("Mes => %d\n", meses + 1);
-    printf("Dia => %d\n", dias);
-
-    // Iniciamos el Programa llamando y asando los valores a cada una de las funciones antes definidas //
-    printf("====================================================\n");
-    printf("// VERIFICACION DE DATOS //\n");
-
-    // Calculamos los dias transcurridos desde que inicio el año hasta el dia actual usando la funcion correspondiente antes definida //
-    N_Dias = Calcular_Numero_Dias(meses, dias, anios);
-    printf("> Dias transcurridos desde que inicio el anio => %d\n", N_Dias);
-
-    // Calculamos la Declinacion Solar usando la funcion correspondiente y pasando los parametros por valores necesarios para la operacion //
-    Declinacion_Solar = Calcular_Angulo_Declinacion_Solar(N_Dias);
-    printf("> Declinacion Solar => %f\n", Declinacion_Solar);
-
-    // Calculamos la ecuacion del tiempo (EoT) y pasamos los parametros necesarios para el calculo //
-    EoT = Ecuacion_Del_Tiempo(N_Dias);
-    printf("> Ecuacion del tiempo => %f\n", EoT);
-
-    // Calculamos el tiempo solar verdadero pasando como referencia los datos necesarios para el calculo //
-    TSV = Calcular_Tiempo_Solar_Verdadero(horas, minutos, Longitud, EoT);
-    Hora_Solar = trunc(TSV);
-    Minutos_Solar = round(60.0 * (TSV - Hora_Solar));
-    printf("> Tiempor solar verdadero => %f\n", TSV);
-
-    // Calculamos el angulo horario usando como parametro el tiempo solar verdadero (TSV) //
-    Angulo_Horario = Calcular_Angulo_Horario(TSV);
-    printf("> Angulo Horario => %f\n", Angulo_Horario);
-
-    // Pasamos la Declinacion Solar y la Latitud de grados a radianes //
-    Declinacion_Solar = Declinacion_Solar * (M_PI / 180.0);
-    Latitud = Latitud * (M_PI / 180.0);
-    printf("> Declinacion Solar en radianes => %f\n", Declinacion_Solar);
-    printf("> Latitud en radianes => %f\n", Latitud);
-
-    // Calculamos la Altitud Solar en radianes //
-    Altitud_Solar = Calcular_Altitud_Solar(Declinacion_Solar, Latitud, Angulo_Horario);
-    // Pasamos la Altitud Solar a grados //
-    Altitud_Solar = Altitud_Solar * (180.0 / M_PI);
-
-    // Calculamos la orientacion Solar o Azimut en radianes//
-    Azimut = Calcular_Azimut(Declinacion_Solar, Altitud_Solar * (M_PI / 180.0), Latitud, Angulo_Horario);
-    // Pasamos la orientacion solar a grados //
-    Azimut = Azimut * (180.0 / M_PI);
-
+    resultados_obtenidos(&horas, &minutos, &segundos, &anios, &meses, &dias, &N_Dias, &Declinacion_Solar, &EoT, &TSV, &Angulo_Horario, &Altitud_Solar, &Orientacion_Solar, &Azimut, &Hora_Solar, &Minutos_Solar, &Latitud, &Longitud);
     // Finalmente presentamos los resultados de altitud y orientacion del sol actual //
     printf("====================================================\n");
     printf("// RESULTADOS FINALES DE ALTITUD DEL SOL Y SU ORIENTACION //\n");
@@ -250,6 +228,5 @@ int main()
     printf("> La posicion de la orientacion del sol es de => %f grados desde el norte\n", Azimut);
     printf("========================================================\n");
     getchar();
-    printf("--------------------------------------------------------------------\n");
     return 0;
 }
