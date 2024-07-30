@@ -26,3 +26,11 @@ especificamente, la Latitud y la Longitud.
 Para poder obtener estos datos podemos dirigirnos a google maps en la aplciacion de un telefono celular o bucando google maps en una computador, pinchamos en el puntero de
 neustra ubicacion actual y nos dara los datos de nuestra latitud y longitud actuales. Estos datos los ingresamos al programa y listo, se nos dara la altitud y orientacion optima para el panel solar. 
   
+## Objetivo General:
+Crear un algoritmo que permita calcular la altitud y orientación solar, en la que exista mayor captación para que sea orientado y sea colocado en el panel solar para obtener mejores resultados, utilizando los siguientes datos: altitud y latitud de la posición actual, la fecha y hora del sistema. Además implementar un diseño electrónico el cual sea comunicado con el algoritmo realizado para que este sea dirigido automáticamente.
+
+## Objetivos específicos
+
+Utilización y comprensión de conceptos básicos aplicados en la lógica de programación, además de la aplicación de algoritmos en proyectos de baja escala programables y observar la eficiencia de los mismos. 
+
+Manejo de componentes electrónicos básicos con integración de microcontroladores en proyectos básicos ya simulados anteriormente en plataformas de diseño y simulación.
